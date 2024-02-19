@@ -13,5 +13,8 @@ export type Id = string & { readonly __brand: unique symbol };
 
 export type Items<T> = Dictionary<T>;
 
-const test: Items<'claim'> = {}
+
+export function push<T extends string, ID extends Id, In extends Item<T, ID>>(item: In, index: Dictionary<In[]>): void {
+    (index[item.id] = index[item.id] ?? []).push(item);
+}
 
