@@ -1,6 +1,6 @@
 import { Dictionary } from "@/utils/Dictionary";
 import { Claim, ClaimId } from "./types/Claim";
-import { Edge, EdgeId } from "./types/Edge";
+import { ClaimEdge, ClaimEdgeId } from "./types/Edge";
 import { Id, push } from "./types/Item";
 import { getEdgeIdsByToId } from "./getEdgeIdsByToId";
 import { sortEdgeIdsLeavesToRoot } from "./sortLeavesToRoot";
@@ -27,12 +27,12 @@ import { sortEdgeIdsLeavesToRoot } from "./sortLeavesToRoot";
  * @param items 
  * @returns 
  */
-export function calcScore<I extends Claim | Edge>(mainId: ClaimId, items: Dictionary<I>) {
+export function calcScore<I extends Claim | ClaimEdge>(mainId: ClaimId, items: Dictionary<I>) {
     const scores: Dictionary<Score> = {};
 
     /** index for quickly finding edges by  (to) */
     let edgeIdsByToId: {
-        [id in Edge['to']]: EdgeId[];
+        [id in ClaimEdge['to']]: ClaimEdgeId[];
     } = getEdgeIdsByToId(items);
 
     let edgeIdsSorted = sortEdgeIdsLeavesToRoot(items);

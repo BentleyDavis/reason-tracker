@@ -1,19 +1,19 @@
 import { Id } from "./Item";
 import { ClaimId } from './Claim'
 
-export type Edge = {
-    id: EdgeId;
-    type: "Edge";
+export type ClaimEdge = {
+    id: ClaimEdgeId;
+    type: "ClaimEdge";
     from: ClaimId;
-    to: EdgeId | ClaimId;
+    to: ClaimEdgeId | ClaimId;
     pro: boolean;
     affects: Affects
 }
 
-export type EdgeId = Id & { readonly __brand: unique symbol };
+export type ClaimEdgeId = Id & { readonly __brand: unique symbol };
 
 export type Affects = 'Relevance' | 'Confidence'
 
-export const isEdge = (obj: any): obj is Edge => {
+export const isEdge = (obj: any): obj is ClaimEdge => {
     return obj && obj.type === "Edge";
 };
