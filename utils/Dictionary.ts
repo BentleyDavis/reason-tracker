@@ -1,9 +1,16 @@
 
-export function createDict<T, K extends string & keyof T>(list: T[], prop: K): { [key: string]: T | undefined } {
+export function createDict<T extends { id?: unknown }>(list: T[]): { [key: string]: T | undefined };
+export function createDict<T, K extends keyof T>(list: T[], prop: K): { [key: string]: T | undefined };
+export function createDict<T, K extends keyof T>(list: T[], prop?: K): { [key: string]: T | undefined } {
+    const keyProp = prop || "id" as K;
     return list.reduce((dict: { [key: string]: T }, item: T) => {
-        dict[String(item[prop])] = item;
+        dict[String(item[keyProp])] = item;
         return dict;
     }, {} as { [P in K]: T });
+}
+
+export function createDictWithId<T extends { id?: unknown }>(list: T[]): { [key: string]: T | undefined } {
+    return createDict(list, "id");
 }
 
 export type Dictionary<T, K extends string | number | symbol = string> = {

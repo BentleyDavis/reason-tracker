@@ -9,7 +9,7 @@ export type Item<T extends string, I extends Id> = {
     id: I,
 }
 
-export type Id = string & { readonly __brand: unique symbol };
+export type Id = string & { readonly __id: unique symbol };
 
 export type Items<T> = Dictionary<T>;
 

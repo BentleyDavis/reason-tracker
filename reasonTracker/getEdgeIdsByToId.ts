@@ -1,14 +1,13 @@
 import { Dictionary, getValues } from "@/utils/Dictionary";
-import { Claim, ClaimId } from "./types/Claim";
-import { ClaimEdge, ClaimEdgeId, isEdge } from "./types/Edge";
+import { Claim, ClaimId, isChildClaim } from "./types/Claim";
 
-export function getEdgeIdsByToId<I extends Claim | ClaimEdge>(items: Dictionary<Claim | ClaimEdge>) {
-    let edgeIdsByToId: Record<ClaimEdgeId | ClaimId, ClaimEdgeId[]> = {};
-    getValues(items).forEach(edge => {
-        if (isEdge(edge)) {
-            const id = edge.to;
-            (edgeIdsByToId[id] = edgeIdsByToId[id] ?? []).push(edge.id);
+export function claimChildrenIdsByParentId<I extends Claim>(items: Dictionary<I>) {
+    let dict = {} as Record<ClaimId, ClaimId[]>;
+    getValues(items).forEach(claim => {
+        if (isChildClaim(claim)) {
+            const id = claim.parentId;
+            (dict[id] = dict[id] ?? []).push(claim.id);
         }
     });
-    return edgeIdsByToId;
+    return dict;
 }

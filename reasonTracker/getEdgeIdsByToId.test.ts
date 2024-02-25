@@ -1,13 +1,13 @@
 import { simple } from "./examples/simple";
-import { getEdgeIdsByToId } from "./getEdgeIdsByToId";
+import { claimChildrenIdsByParentId } from "./getEdgeIdsByToId";
 import { Claim } from "./types/Claim";
 
 describe("getEdgeIdsByToId", () => {
     it("should return an array of edge IDs for the given toId", () => {
 
-        const result = getEdgeIdsByToId(simple);
+        const result = claimChildrenIdsByParentId(simple);
 
-        expect(result).toEqual({ "mainClaim": ["pro1Edge", "con1Edge"] });
+        expect(result).toEqual({ "mainClaim": ["pro1", "con1"] });
     });
 
 
