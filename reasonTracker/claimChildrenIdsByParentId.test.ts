@@ -1,5 +1,5 @@
 import { simple } from "./examples/simple";
-import { claimChildrenIdsByParentId } from "./getEdgeIdsByToId";
+import { claimChildrenIdsByParentId } from "./claimChildrenIdsByParentId";
 
 describe("getEdgeIdsByToId", () => {
     it("should return an array of edge IDs for the given toId", () => {
