@@ -10,12 +10,14 @@ export const simpleArray: Claim[] = [
         type: "Claim",
         parentId: mainClaimId,
         pro: true,
+        affects: "Confidence",
     },
     {
         id: "con1" as ClaimId,
         type: "Claim",
         parentId: mainClaimId,
         pro: false,
+        affects: "Confidence",
     },
 ]
 

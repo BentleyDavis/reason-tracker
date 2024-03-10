@@ -1,13 +1,13 @@
 import { Dictionary, getValues } from "@/utils/Dictionary"
-import { ClaimEdge, ClaimEdgeId, isEdge } from "./types/Edge"
-import { Claim } from "./types/Claim"
+import { Claim, ClaimId, isChildClaim } from "./types/Claim"
 
 const toposort = require('toposort')
 
-/** returns a list of EdgeIds ordered from leaves to the root */
-export function sortEdgeIdsLeavesToRoot(items: Dictionary<ClaimEdge | Claim>) {
-    const edges = getValues(items).filter(isEdge)
+/** returns a list of claimIds ordered from leaves to the root */
+export function sortEdgeIdsLeavesToRoot(claims: Dictionary<Claim>) {
     return toposort(
-        Object.values(edges).map(c => [c.to, c.from])
-    ).reverse() as ClaimEdgeId[]
+        getValues(claims)
+            .filter(c => isChildClaim(c))
+            .map(i => [i.id, i.parentId])
+    ) as ClaimId[]
 }
