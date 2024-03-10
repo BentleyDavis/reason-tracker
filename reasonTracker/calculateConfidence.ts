@@ -1,6 +1,18 @@
 
 
 export interface Score {
+    /**
+     * The calculated confidence of the claim from 1 to -1
+     *  1.0 likely true or assumed true
+     *  0.5 probably true
+     *  0.0 unknown
+     * -0.5 probably false
+     * -1.0 likely false
+     */
+    unitConfidence: number;
+}
+export interface Score {
+
     unitConfidence: number,
 }
 
