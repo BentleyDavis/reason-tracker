@@ -2,7 +2,7 @@ import { ScoreWithParent, calculateConfidence } from "./calculateConfidence";
 
 describe("calculateConfidence", () => {
 
-    it("should return 0 confidence for .5 pro .5 con", () => {
+    it("should return 0 confidence for 1 pro & 1 con", () => {
         const children: ScoreWithParent[] = [
             { unitConfidence: 1, proMyParent: true, pctRelevantToMyParent: 1 },
             { unitConfidence: 1, proMyParent: false, pctRelevantToMyParent: 1 },
@@ -50,7 +50,7 @@ describe("calculateConfidence", () => {
         expect(result.unitConfidence).toEqual(.5);
     });
 
-    it("should return -1 confidence for 1 con", () => {
+    it("should return 0 confidence for 1 con (non-reversable)", () => {
         const children: ScoreWithParent[] = [
             { unitConfidence: 1, proMyParent: false, pctRelevantToMyParent: 1 },
         ];
@@ -59,7 +59,7 @@ describe("calculateConfidence", () => {
 
         expect(result.pctProMeConfidence).toEqual(0);
         expect(result.pctConMeConfidence).toEqual(1);
-        expect(result.unitConfidence).toEqual(-1);
+        expect(result.unitConfidence).toEqual(0);
     });
 
     it("should handle empty children array", () => {

@@ -6,14 +6,10 @@ export interface Score {
      *  1.0 likely true or assumed true
      *  0.5 probably true
      *  0.0 unknown
-     * -0.5 probably false
+     * -0.5 probably false ** currently not allowed
      * -1.0 likely false
      */
     unitConfidence: number;
-}
-export interface Score {
-
-    unitConfidence: number,
 }
 
 export interface ScoreWithDisplayData extends Score {
@@ -42,11 +38,12 @@ export function calculateConfidence(children: ScoreWithParent[]): ScoreWithDispl
     }
 
     for (const child of children) {
-        const flip = child.proMyParent ? 1 : -1; // Flip it if it is a con (not pro)
+        const flip = child.proMyParent ? 1 : -1; // Flip it if it is a con (not pro parent)
 
         unitConfidence += child.unitConfidence * child.pctRelevantToMyParent * flip;
-
         const pctValue = child.unitConfidence * weight(child) / totalChildrenWeight * flip;
+
+        // TODO: May need to store children weights for calculating visualizations on fractionOfRoot, but could re-calculate it later if we export the weight function
 
         if (pctValue > 0) {
             pctProMeConfidence += pctValue;
@@ -58,7 +55,7 @@ export function calculateConfidence(children: ScoreWithParent[]): ScoreWithDispl
     return {
         pctProMeConfidence,
         pctConMeConfidence,
-        unitConfidence,
+        unitConfidence: unitConfidence > 0 ? unitConfidence : 0, // Currently not reversable so we don't allow negative confidence
     }
 
 }
