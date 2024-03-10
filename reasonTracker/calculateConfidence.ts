@@ -23,32 +23,23 @@ export function calculateConfidence(children: ScoreWithParent[]): ScoreWithDispl
         }
     }
 
-    let pctProMeConfidence = 0;
-    let pctConMeConfidence = 0;
-    let unitConfidence = 0;
+    let [pctProMeConfidence, pctConMeConfidence, unitConfidence, totalChildrenWeight] = [0, 0, 0, 0];
 
-    let ChildrenWeight = 0;
     for (const child of children) {
-        ChildrenWeight += weight(child);
+        totalChildrenWeight += weight(child);
     }
 
     for (const child of children) {
-        const flip = (child.proMyParent === false ? -1 : 1); // Flip it if it is a con (not pro)
+        const flip = child.proMyParent ? 1 : -1; // Flip it if it is a con (not pro)
 
-        unitConfidence +=
-            child.unitConfidence
-            * child.pctRelevantToMyParent
-            * flip;
+        unitConfidence += child.unitConfidence * child.pctRelevantToMyParent * flip;
 
-        const pctValue =
-            child.unitConfidence
-            * weight(child) / ChildrenWeight // multiply by the percentage of the total children weight
-            * flip;
+        const pctValue = child.unitConfidence * weight(child) / totalChildrenWeight * flip;
 
         if (pctValue > 0) {
-            pctProMeConfidence += pctValue
+            pctProMeConfidence += pctValue;
         } else {
-            pctConMeConfidence -= pctValue
+            pctConMeConfidence -= pctValue;
         }
     }
 
