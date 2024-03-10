@@ -1,7 +1,7 @@
 
 
 export interface Score {
-    pctConfidence: number,
+    unitConfidence: number,
 }
 
 export interface ScoreWithDisplayData extends Score {
@@ -19,13 +19,13 @@ export function calculateConfidence(children: ScoreWithParent[]): ScoreWithDispl
         return {
             pctProMeConfidence: 1,
             pctConMeConfidence: 0,
-            pctConfidence: 1,
+            unitConfidence: 1,
         }
     }
 
     let pctProMeConfidence = 0;
     let pctConMeConfidence = 0;
-    let pctConfidence = 0;
+    let unitConfidence = 0;
 
     let ChildrenWeight = 0;
     for (const child of children) {
@@ -33,28 +33,33 @@ export function calculateConfidence(children: ScoreWithParent[]): ScoreWithDispl
     }
 
     for (const child of children) {
-        const childValue =
-            child.pctConfidence
+        const flip = (child.proMyParent === false ? -1 : 1); // Flip it if it is a con (not pro)
+
+        unitConfidence +=
+            child.unitConfidence
+            * child.pctRelevantToMyParent
+            * flip;
+
+        const pctValue =
+            child.unitConfidence
             * weight(child) / ChildrenWeight // multiply by the percentage of the total children weight
-            * (child.proMyParent === false ? -1 : 1); // Flip it if it is a con (not pro)
+            * flip;
 
-        pctConfidence += childValue
-
-        if (childValue > 0) {
-            pctProMeConfidence += childValue
+        if (pctValue > 0) {
+            pctProMeConfidence += pctValue
         } else {
-            pctConMeConfidence += -childValue
+            pctConMeConfidence -= pctValue
         }
     }
 
     return {
         pctProMeConfidence,
         pctConMeConfidence,
-        pctConfidence,
+        unitConfidence,
     }
 
 }
 
 function weight(score: ScoreWithParent) {
-    return Math.abs(score.pctConfidence) * score.pctRelevantToMyParent
+    return Math.abs(score.unitConfidence) * score.pctRelevantToMyParent
 }
