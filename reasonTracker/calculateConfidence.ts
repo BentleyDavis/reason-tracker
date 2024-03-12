@@ -12,8 +12,8 @@ export interface Score {
     unitConfidence: number;
 }
 
-export interface HasId {
-    id: any;
+export interface HasId<T> {
+    id: T;
 }
 
 export interface ScoreWithDisplayData extends Score {
@@ -27,17 +27,19 @@ export interface ScoreWithParent extends Score {
     affects: "Confidence" | "Relevance"
 }
 
-export interface childContibution extends HasId {
+export interface childContibution<ID> extends HasId<ID> {
     pctValue: number;
 }
 
-export function calculateConfidence(children: (ScoreWithParent & HasId)[]): {
+export type childScore<ID> = ScoreWithParent & HasId<ID>;
+
+export function calculateConfidence<T extends childScore<ID>, ID>(children: T[]): {
     score: ScoreWithDisplayData
-    childrenContibution: childContibution[]
+    childrenContibutions: childContibution<ID>[] // Fix: Add the missing type argument
 } {
 
     const confidenceChildren = children.filter(child => child.affects === "Confidence")
-    const childrenContibutions: childContibution[] = [];
+    const childrenContibutions: childContibution<ID>[] = [];
 
     if (confidenceChildren.length < 1) {
         return {
@@ -46,7 +48,7 @@ export function calculateConfidence(children: (ScoreWithParent & HasId)[]): {
                 pctConMeConfidence: 0,
                 unitConfidence: 1,
             },
-            childrenContibution: childrenContibutions,
+            childrenContibutions: childrenContibutions,
         }
     }
 
@@ -83,7 +85,7 @@ export function calculateConfidence(children: (ScoreWithParent & HasId)[]): {
             pctConMeConfidence,
             unitConfidence: unitConfidence > 0 ? unitConfidence : 0, // Currently not reversable so we don't allow negative confidence
         },
-        childrenContibution: [],
+        childrenContibutions,
     }
 
 }
