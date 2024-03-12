@@ -1,86 +1,86 @@
-import { ScoreWithParent, calculateConfidence } from "./calculateConfidence";
+import { HasId, ScoreWithParent, calculateConfidence } from "./calculateConfidence";
 
 describe("calculateConfidence", () => {
 
     it("should return 0 confidence for 1 pro & 1 con", () => {
-        const children: ScoreWithParent[] = [
-            { unitConfidence: 1, proMyParent: true, pctRelevantToMyParent: 1, affects: "Confidence" },
-            { unitConfidence: 1, proMyParent: false, pctRelevantToMyParent: 1, affects: "Confidence" },
+        const children: (ScoreWithParent & HasId)[] = [
+            { id: '1', unitConfidence: 1, proMyParent: true, pctRelevantToMyParent: 1, affects: "Confidence" },
+            { id: '2', unitConfidence: 1, proMyParent: false, pctRelevantToMyParent: 1, affects: "Confidence" },
         ];
 
-        const result = calculateConfidence(children);
+        const { score, childrenContibution } = calculateConfidence(children);
 
-        expect(result.pctProMeConfidence).toEqual(.5);
-        expect(result.pctConMeConfidence).toEqual(.5);
-        expect(result.unitConfidence).toEqual(0);
+        expect(score.pctProMeConfidence).toEqual(.5);
+        expect(score.pctConMeConfidence).toEqual(.5);
+        expect(score.unitConfidence).toEqual(0);
     });
 
     it("two half true", () => {
-        const children: ScoreWithParent[] = [
-            { unitConfidence: .5, proMyParent: true, pctRelevantToMyParent: 1, affects: "Confidence" },
-            { unitConfidence: .5, proMyParent: false, pctRelevantToMyParent: 1, affects: "Confidence" },
+        const children: (ScoreWithParent & HasId)[] = [
+            { id: '1', unitConfidence: .5, proMyParent: true, pctRelevantToMyParent: 1, affects: "Confidence" },
+            { id: '2', unitConfidence: .5, proMyParent: false, pctRelevantToMyParent: 1, affects: "Confidence" },
         ];
 
-        const result = calculateConfidence(children);
+        const { score, childrenContibution } = calculateConfidence(children);
 
-        expect(result.pctProMeConfidence).toEqual(.25);
-        expect(result.pctConMeConfidence).toEqual(.25);
-        expect(result.unitConfidence).toEqual(0);
+        expect(score.pctProMeConfidence).toEqual(.25);
+        expect(score.pctConMeConfidence).toEqual(.25);
+        expect(score.unitConfidence).toEqual(0);
     });
 
     it("mix 1", () => {
-        const children: ScoreWithParent[] = [
-            { unitConfidence: 1, proMyParent: true, pctRelevantToMyParent: 1, affects: "Confidence" },
-            { unitConfidence: .5, proMyParent: false, pctRelevantToMyParent: 1, affects: "Confidence" },
+        const children: (ScoreWithParent & HasId)[] = [
+            { id: '1', unitConfidence: 1, proMyParent: true, pctRelevantToMyParent: 1, affects: "Confidence" },
+            { id: '2', unitConfidence: .5, proMyParent: false, pctRelevantToMyParent: 1, affects: "Confidence" },
         ];
 
-        const result = calculateConfidence(children);
-        expect(result).toMatchSnapshot()
+        const { score, childrenContibution } = calculateConfidence(children);
+        expect(score).toMatchSnapshot()
     });
 
     it("mix 2", () => {
-        const children: ScoreWithParent[] = [
-            { unitConfidence: 1, proMyParent: true, pctRelevantToMyParent: 1, affects: "Confidence" },
-            { unitConfidence: 1, proMyParent: false, pctRelevantToMyParent: .5, affects: "Confidence" },
+        const children: (ScoreWithParent & HasId)[] = [
+            { id: '1', unitConfidence: 1, proMyParent: true, pctRelevantToMyParent: 1, affects: "Confidence" },
+            { id: '2', unitConfidence: 1, proMyParent: false, pctRelevantToMyParent: .5, affects: "Confidence" },
         ];
 
-        const result = calculateConfidence(children);
-        expect(result.pctProMeConfidence).toEqual(0.6666666666666666);
-        expect(result.pctConMeConfidence).toEqual(0.3333333333333333);
-        expect(result.unitConfidence).toEqual(.5);
+        const { score, childrenContibution } = calculateConfidence(children);
+        expect(score.pctProMeConfidence).toEqual(0.6666666666666666);
+        expect(score.pctConMeConfidence).toEqual(0.3333333333333333);
+        expect(score.unitConfidence).toEqual(.5);
     });
 
     it("should return 0 confidence for 1 con (non-reversable)", () => {
-        const children: ScoreWithParent[] = [
-            { unitConfidence: 1, proMyParent: false, pctRelevantToMyParent: 1, affects: "Confidence" },
+        const children: (ScoreWithParent & HasId)[] = [
+            { id: '1', unitConfidence: 1, proMyParent: false, pctRelevantToMyParent: 1, affects: "Confidence" },
         ];
 
-        const result = calculateConfidence(children);
+        const { score, childrenContibution } = calculateConfidence(children);
 
-        expect(result.pctProMeConfidence).toEqual(0);
-        expect(result.pctConMeConfidence).toEqual(1);
-        expect(result.unitConfidence).toEqual(0);
+        expect(score.pctProMeConfidence).toEqual(0);
+        expect(score.pctConMeConfidence).toEqual(1);
+        expect(score.unitConfidence).toEqual(0);
     });
 
     it("should handle empty children array", () => {
-        const children: ScoreWithParent[] = [];
+        const children: (ScoreWithParent & HasId)[] = [];
 
-        const result = calculateConfidence(children);
+        const { score, childrenContibution } = calculateConfidence(children);
 
-        expect(result.pctProMeConfidence).toEqual(1);
-        expect(result.pctConMeConfidence).toEqual(0);
-        expect(result.unitConfidence).toEqual(1);
+        expect(score.pctProMeConfidence).toEqual(1);
+        expect(score.pctConMeConfidence).toEqual(0);
+        expect(score.unitConfidence).toEqual(1);
     });
 
     it("should ignore relevance claims", () => {
-        const children: ScoreWithParent[] = [
-            { unitConfidence: 1, proMyParent: false, pctRelevantToMyParent: 1, affects: "Relevance" },
+        const children: (ScoreWithParent & HasId)[] = [
+            { id: '1', unitConfidence: 1, proMyParent: false, pctRelevantToMyParent: 1, affects: "Relevance" },
         ];
 
-        const result = calculateConfidence(children);
+        const { score, childrenContibution } = calculateConfidence(children);
 
-        expect(result.pctProMeConfidence).toEqual(1);
-        expect(result.pctConMeConfidence).toEqual(0);
-        expect(result.unitConfidence).toEqual(1);
+        expect(score.pctProMeConfidence).toEqual(1);
+        expect(score.pctConMeConfidence).toEqual(0);
+        expect(score.unitConfidence).toEqual(1);
     });
 });
