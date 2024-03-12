@@ -4,8 +4,8 @@ describe("calculateConfidence", () => {
 
     it("should return 0 confidence for 1 pro & 1 con", () => {
         const children: ScoreWithParent[] = [
-            { unitConfidence: 1, proMyParent: true, pctRelevantToMyParent: 1 },
-            { unitConfidence: 1, proMyParent: false, pctRelevantToMyParent: 1 },
+            { unitConfidence: 1, proMyParent: true, pctRelevantToMyParent: 1, affects: "Confidence" },
+            { unitConfidence: 1, proMyParent: false, pctRelevantToMyParent: 1, affects: "Confidence" },
         ];
 
         const result = calculateConfidence(children);
@@ -17,8 +17,8 @@ describe("calculateConfidence", () => {
 
     it("two half true", () => {
         const children: ScoreWithParent[] = [
-            { unitConfidence: .5, proMyParent: true, pctRelevantToMyParent: 1 },
-            { unitConfidence: .5, proMyParent: false, pctRelevantToMyParent: 1 },
+            { unitConfidence: .5, proMyParent: true, pctRelevantToMyParent: 1, affects: "Confidence" },
+            { unitConfidence: .5, proMyParent: false, pctRelevantToMyParent: 1, affects: "Confidence" },
         ];
 
         const result = calculateConfidence(children);
@@ -30,8 +30,8 @@ describe("calculateConfidence", () => {
 
     it("mix 1", () => {
         const children: ScoreWithParent[] = [
-            { unitConfidence: 1, proMyParent: true, pctRelevantToMyParent: 1 },
-            { unitConfidence: .5, proMyParent: false, pctRelevantToMyParent: 1 },
+            { unitConfidence: 1, proMyParent: true, pctRelevantToMyParent: 1, affects: "Confidence" },
+            { unitConfidence: .5, proMyParent: false, pctRelevantToMyParent: 1, affects: "Confidence" },
         ];
 
         const result = calculateConfidence(children);
@@ -40,8 +40,8 @@ describe("calculateConfidence", () => {
 
     it("mix 2", () => {
         const children: ScoreWithParent[] = [
-            { unitConfidence: 1, proMyParent: true, pctRelevantToMyParent: 1 },
-            { unitConfidence: 1, proMyParent: false, pctRelevantToMyParent: .5 },
+            { unitConfidence: 1, proMyParent: true, pctRelevantToMyParent: 1, affects: "Confidence" },
+            { unitConfidence: 1, proMyParent: false, pctRelevantToMyParent: .5, affects: "Confidence" },
         ];
 
         const result = calculateConfidence(children);
@@ -52,7 +52,7 @@ describe("calculateConfidence", () => {
 
     it("should return 0 confidence for 1 con (non-reversable)", () => {
         const children: ScoreWithParent[] = [
-            { unitConfidence: 1, proMyParent: false, pctRelevantToMyParent: 1 },
+            { unitConfidence: 1, proMyParent: false, pctRelevantToMyParent: 1, affects: "Confidence" },
         ];
 
         const result = calculateConfidence(children);
@@ -64,6 +64,18 @@ describe("calculateConfidence", () => {
 
     it("should handle empty children array", () => {
         const children: ScoreWithParent[] = [];
+
+        const result = calculateConfidence(children);
+
+        expect(result.pctProMeConfidence).toEqual(1);
+        expect(result.pctConMeConfidence).toEqual(0);
+        expect(result.unitConfidence).toEqual(1);
+    });
+
+    it("should ignore relevance claims", () => {
+        const children: ScoreWithParent[] = [
+            { unitConfidence: 1, proMyParent: false, pctRelevantToMyParent: 1, affects: "Relevance" },
+        ];
 
         const result = calculateConfidence(children);
 
