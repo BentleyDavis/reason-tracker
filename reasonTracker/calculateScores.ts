@@ -9,7 +9,7 @@ import { calculateRelevance } from "./calculateRelevance";
 
 
 
-export function calculate(claims: Dictionary<Claim>) {
+export function calculateScores(claims: Dictionary<Claim>) {
 
     const childIndex = claimChildrenIdsByParentId(claims);
 
