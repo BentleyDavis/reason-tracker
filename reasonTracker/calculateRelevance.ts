@@ -1,4 +1,4 @@
-import { ScoreWithParent } from "./calculateConfidence";
+import { ScoreWithParent } from "./types/Score";
 
 export function calculateRelevance(children: ScoreWithParent[]): number {
     const relevanceChildren = children.filter(child => child.affects === "Relevance")

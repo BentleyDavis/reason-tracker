@@ -1,0 +1,60 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`calculate should calculate scores for slightly complexity 1`] = `
+{
+  "1": {
+    "affects": "Confidence",
+    "id": "1",
+    "pctRelevantToMyParent": 1,
+    "proMyParent": true,
+    "unitConfidence": 1,
+  },
+  "2": {
+    "affects": "Confidence",
+    "id": "2",
+    "pctRelevantToMyParent": 1,
+    "proMyParent": false,
+    "unitConfidence": 0.3333333333333333,
+  },
+  "2_1": {
+    "affects": "Confidence",
+    "id": "2_1",
+    "pctRelevantToMyParent": 1,
+    "proMyParent": true,
+    "unitConfidence": 1,
+  },
+  "2_2": {
+    "affects": "Confidence",
+    "id": "2_2",
+    "pctRelevantToMyParent": 1,
+    "proMyParent": true,
+    "unitConfidence": 1,
+  },
+  "2_3": {
+    "affects": "Confidence",
+    "id": "2_3",
+    "pctRelevantToMyParent": 1,
+    "proMyParent": false,
+    "unitConfidence": 1,
+  },
+}
+`;
+
+exports[`calculate should consistently solve Simple 1`] = `
+{
+  "con1": {
+    "affects": "Confidence",
+    "id": "con1",
+    "pctRelevantToMyParent": 1,
+    "proMyParent": false,
+    "unitConfidence": 1,
+  },
+  "pro1": {
+    "affects": "Confidence",
+    "id": "pro1",
+    "pctRelevantToMyParent": 1,
+    "proMyParent": true,
+    "unitConfidence": 1,
+  },
+}
+`;

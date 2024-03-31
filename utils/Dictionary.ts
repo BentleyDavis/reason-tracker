@@ -34,3 +34,17 @@ export function getValues<T, K extends string>(
 ) {
     return (Object.values(dict) as T[]).filter((value) => value !== undefined) as Exclude<T, undefined>[];
 }
+
+export function getOne<T, K extends string>(
+    id: K,
+    dict: { [P in K]: T; },
+): T | undefined {
+    return dict[id];
+}
+
+export function getMany<T, K extends string>(
+    ids: K[],
+    dict: { [P in K]: T | undefined; },
+): T[] {
+    return (ids.map(id => dict[id])).filter((item): item is T => item !== undefined);
+}

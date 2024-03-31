@@ -1,4 +1,4 @@
-import { ScoreWithParent } from "./calculateConfidence";
+import { ScoreWithParent } from "./types/Score";
 import { calculateRelevance } from "./calculateRelevance";
 
 describe("calculateRelevance", () => {
