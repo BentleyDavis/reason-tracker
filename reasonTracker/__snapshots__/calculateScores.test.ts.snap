@@ -37,6 +37,10 @@ exports[`calculate should calculate scores for slightly complexity 1`] = `
     "proMyParent": false,
     "unitConfidence": 1,
   },
+  "mainClaim": {
+    "id": "mainClaim",
+    "unitConfidence": 0.7222222222222222,
+  },
 }
 `;
 
@@ -48,6 +52,10 @@ exports[`calculate should consistently solve Simple 1`] = `
     "pctRelevantToMyParent": 1,
     "proMyParent": false,
     "unitConfidence": 1,
+  },
+  "mainClaim": {
+    "id": "mainClaim",
+    "unitConfidence": 0,
   },
   "pro1": {
     "affects": "Confidence",

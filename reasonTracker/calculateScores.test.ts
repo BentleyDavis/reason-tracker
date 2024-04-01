@@ -9,6 +9,7 @@ describe("calculate", () => {
 
         const result = calculateScores(claims);
 
+        expect(result["mainClaim"]?.unitConfidence).toEqual(0)
         expect(result).toMatchSnapshot();
     });
 
@@ -16,7 +17,7 @@ describe("calculate", () => {
         const claims = slightlyComplex;
 
         const result = calculateScores(claims);
-
+        expect(result["mainClaim"]?.unitConfidence).toEqual(13 / 18)
         expect(result).toMatchSnapshot();
     });
 

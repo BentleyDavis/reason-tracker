@@ -31,3 +31,7 @@ export interface childContibution<ID> extends HasId<ID> {
 }
 
 export type ChildScore<ID> = ScoreWithParent & HasId<ID>;
+
+export function isChildScore<ID>(item: any): item is ChildScore<ID> {
+    return item && Object.prototype.hasOwnProperty.call(item, 'affects');
+}

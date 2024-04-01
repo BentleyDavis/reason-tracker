@@ -4,7 +4,6 @@ export function calculateConfidence<T extends ChildScore<ID>, ID>(children: T[])
     ScoreWithDisplayData {
 
     const confidenceChildren = children.filter(child => child.affects === "Confidence")
-    const childrenContibutions: childContibution<ID>[] = [];
 
     if (confidenceChildren.length < 1) {
         return {
